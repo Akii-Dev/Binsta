@@ -1,0 +1,54 @@
+{% extends "./layouts/form.twig" %}
+
+{% block body %}
+	<body class="bg-[url('https://cdn.mos.cms.futurecdn.net/4MLyNZ66GSMUp7z49Q8k3K.jpg')] bg-cover">
+
+		<div class="flex min-h-max flex-col justify-center py-12 sm:px-6 lg:px-8 ">
+			<div class="sm:mx-auto sm:w-full sm:max-w-md">
+				<img class="mx-auto h-12 w-auto" src="/images/logo.png" alt="Your Company">
+				<h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-100 ">Sign in to your account</h2>
+
+			</div>
+
+			<div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+
+				<div class="bg-black/[.25] px-4 py-8 sm:rounded-lg sm:px-10 backdrop-blur-[1px] shadow-2xl shadow-white/50">
+					<form class="space-y-6" method="POST" action="../user/login">
+						<div>
+							<div class="mt-2">
+								<input id="name" name="name" type="text" placeholder="Username" required class="block w-full rounded-md border-0 py-1.5 px-1 text-gray-100 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-300 bg-gray-500/[.25] focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6">
+							</div>
+						</div>
+
+						<div>
+							<div class="mt-2">
+								<input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 px-1 text-gray-100 shadow-sm ring-1 ring-inset ring-gray-900 placeholder:text-gray-300 bg-gray-500/[.25] focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6">
+							</div>
+						</div>
+
+						<div>
+							<button type="submit" class="flex w-full justify-center rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600">Sign in</button>
+						</div>
+						{% if data %}
+							<p class="text-red-500">{{ data }}</p>
+						{% endif %}
+					</form>
+
+					<div class="mt-6">
+						<div class="relative mb-4">
+
+							<div class="relative flex justify-center text-sm ">
+								<span class="px-2 text-gray-200 underline">Geen account?</span>
+							</div>
+						</div>
+						<div>
+							<a href="../user/register" class="flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-purple-500 shadow-sm hover:shadow-purple-500 bg-black/[.75] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-300">Register</a>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	{% endblock %}

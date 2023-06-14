@@ -1,0 +1,137 @@
+{% extends "./layouts/app.twig" %}
+{% set likes = data.post.__get('ownLikeList') %}
+{% set isLiked = user ? likes|filter(like => like.user_id == user.id)|length > 0 : false %}
+
+
+{% block body %}
+{% if data.error %}
+							<p class="text-red-500">{{ data.error }}</p>
+						{% endif %}
+	<div class="">
+		<div class="w-11/12 mx-auto">
+			<div
+				class="rounded-lg bg-none w-full px-2 border">
+				{# upper post nav #}
+				<div class="flex justify-between">
+					<div class="flex p-1 items-center">
+						<img class="h-8 w-8 rounded-full mr-2" src="/images/{{ data.post.__get('user').picture }}" alt="">
+
+						<p class="text-center">{{ data.post.__get('user').name }}</p>
+
+					</div>
+					{% if data.post.__get('user').id == user.id %}
+
+						<div class="p-1 flex">
+
+							<a href="edit?id={{data.post.url}}">
+								<img class="h-full w-6 p-auto mr-2" src="/images/edit.svg" alt="">
+							</a>
+							<button id="delete-knop" class="mx-2">
+								<img class="h-6 w-6 p-auto pointer-events-none" src="/images/trash.png" alt="">
+
+							</button>
+						</div>
+
+					{% endif %}
+
+				</div>
+				<div class="w-full">
+
+					{% if data.post.language == "none" %}
+						<pre class="text-clip overflow-hidden resize-none text-xs max-w-full break-normal"><code class="language-plaintext">{{ data.post.content }}</code></pre>
+					{% else %}
+						<pre class="text-clip overflow-hidden resize-none text-xs max-w-full break-normal"><code class="language-{{data.post.language}}">{{ data.post.content }}</code></pre>
+					{% endif %}
+				</div>
+				{# onder sectie #}
+				<div>
+					<div>
+						<span class="inline-flex items-center rounded-full bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 uppercase">{{data.post.language}}</span>
+						<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 capitalize">{{data.post.visibility}}</span>
+					</div>
+					{# likes #}
+					<div class="flex w-full items-center p-2">
+						<form action="../post/like?id={{data.post.id}}" method="POST">
+
+							<button type="submit" name="status" value="{{ isLiked ? 'dislike' : 'like' }}">
+								<img class="h-6 w-6 mr-2" src="{{ isLiked ? '/images/liked.png' : '/images/heart.png' }}" alt="">
+
+							</button>
+						</form>
+						<p>{{ likes|length }}</p>
+					</div>
+					{# desc #}
+					<div class="flex p-2 mb-4">
+						<p class="font-semibold mr-2">{{ data.post.__get('user').name }}</p>
+
+						<p>{{data.post.description}}</p>
+					</div>
+					<form class="mb-0" method="POST" action="../post/reply?id={{data.post.url}}">
+						<div class="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+							<input type="text " name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm outline-none" placeholder="Post a comment...">
+							<div class="flex-shrink-0">
+								<button type="submit" class="inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-purple-400 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600">Post</button>
+							</div>
+						</div>
+					</form>
+					{% for reactie in data.reaction %}
+						<div class="flex my-2 p-1 border-b border-gray-200 items-center">
+							<a href="../user/about?name={{ reactie.__get('user').name }}">
+								<img class="h-8 w-8 rounded-full mx-2" src="/images/{{reactie.__get('user').picture}}" alt="">
+							</a>
+							<a href="../user/about?name={{ reactie.__get('user').name }}">
+								<p class="font-semibold mr-2 ">{{reactie.__get('user').name}}:</p>
+							</a>
+							<p>{{reactie.content}}</p>
+						</div>
+
+
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if data.post.__get('user').id == user.id %}
+
+
+		<div id="warning" class="hidden relative" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+			<div class="fixed inset-0 z-10 overflow-y-auto">
+				<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+					<div id="warning-content" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+						<div class="sm:flex sm:items-start">
+							<div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+								<svg class="h-6 w-6 text-red-600" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+								</svg>
+							</div>
+							<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+								<h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Delete post</h3>
+								<div class="mt-2">
+									<p class="text-sm text-gray-500">Are you sure you want to delete your post? This action cannot be undone.</p>
+								</div>
+							</div>
+						</div>
+						<div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+
+							<a href="delete?id={{data.post.url}}" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Delete</a>
+
+							<button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/show.js" defer></script>
+
+
+	{% endif %}
+	<script>
+		hljs.highlightAll();
+	</script>
+
+{% endblock %}

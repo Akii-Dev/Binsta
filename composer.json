@@ -1,0 +1,20 @@
+{
+    "name": "akii-dev/binsta",
+    "require": {
+        "twig/twig": "^3.5"
+    },
+    "autoload": {
+        "files": [
+        "helpers.php",
+        "rb.php"
+    ],
+    "classmap": [
+        "controllers/"
+    ]
+    },
+    "authors": [
+        {
+            "name": "Aki"
+        }
+    ]
+}

@@ -1,0 +1,106 @@
+{% extends "./layouts/app.twig" %}
+
+
+{% block body %}
+
+	<div class="">
+		<div class="w-9/12 mx-auto">
+			{% for post in data.post %}
+				{% set likes = post.__get('ownLikeList') %}
+
+				{% set isLiked = user ? likes|filter(like => like.user_id == user.id)|length > 0 : false %}
+
+
+				<div
+					class="rounded-lg bg-none w-full px-2 border mt-4 mb-8">
+					{# upper post nav #}
+					<div class="flex p-1 items-center justify-between">
+						<a href="../user/about?name={{ post.__get('user').name }}">
+							<div class="flex items-center">
+								<img class="h-8 w-8 rounded-full mr-2" src="/images/{{ post.__get('user').picture }}" alt="">
+
+								<p class="text-center">{{ post.__get('user').name }}</p>
+							</div>
+						</a>
+						<div>
+							<span class="inline-flex items-center rounded-full bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 uppercase">{{post.language}}</span>
+							<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 capitalize">{{post.visibility}}</span>
+						</div>
+
+					</div>
+					<div class="w-full">
+						<a href="../post/show?id={{post.url}}">
+							{% if post.language == "none" %}
+								<pre class="text-clip overflow-hidden resize-none text-xs max-w-full break-normal"><code class="language-plaintext">{{ post.content }}</code></pre>
+							{% else %}
+								<pre class="text-clip overflow-hidden resize-none text-xs max-w-full break-normal"><code class="language-{{post.language}}">{{ post.content }}</code></pre>
+							{% endif %}
+
+						</a>
+					</div>
+					<div>
+						<div>
+							<span class="inline-flex items-center rounded-full bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 uppercase">{{post.language}}</span>
+							<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 capitalize">{{post.visibility}}</span>
+						</div>
+						<div class="flex w-full items-center p-2">
+
+							<form action="../post/like?id={{post.id}}" method="POST">
+
+								<button type="submit" name="status" value="{{ isLiked ? 'dislike' : 'like' }}">
+									<img class="h-6 w-6 mr-2" src="{{ isLiked ? '/images/liked.png' : '/images/heart.png' }}" alt="">
+
+								</button>
+							</form>
+
+							<p>{{ likes|length }}</p>
+
+						</div>
+						{# description #}
+						<div class="flex p-2 pb-4">
+							<p class="font-semibold mr-2">{{ post.__get('user').name }}</p>
+
+							<a href="../post/show?id={{post.url}}">
+								<p>{{ post.description }}</p>
+							</a>
+						</div>
+
+						<form class="mb-0" method="POST" action="/post/reply?id={{post.url}}">
+							<div class="flex items-center justify-between space-x-3 border-t border-gray-200 px-2 py-2 sm:px-3">
+								<input type="text" name="comment" id="comment" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm outline-none" placeholder="Post a comment...">
+								<div class="flex-shrink-0">
+									<button type="submit" class="inline-flex items-center rounded-md  px-3 py-2 text-sm font-semibold text-purple-400 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600">Post</button>
+								</div>
+							</div>
+						</form>
+						{% for comment in data.reaction %}
+
+							{% if post.id == comment.post_id %}
+
+
+								<div class="flex my-2 p-1 border-b border-gray-200 items-center">
+									<a href="../user/about?name={{comment.__get('user').name }}">
+										<img class="h-8 w-8 rounded-full mx-2" src="/images/{{comment.__get('user').picture}}" alt="">
+									</a>
+									<a href="../user/about?name={{comment.__get('user').name }}">
+										<p class="font-semibold mr-2 ">{{comment.__get('user').name}}:</p>
+									</a>
+									<p>{{comment.content}}</p>
+
+								</div>
+
+
+							{% endif %}
+
+						{% endfor %}
+
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+	</div>
+	<script>
+		hljs.highlightAll();
+	</script>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "./layouts/app.twig" %}
+
+
+{% block body %}
+
+
+	<div
+		class="w-9/12 mx-auto">
+		{# profile #}
+		<div class="flex flex-col items-center justify-center mt-8">
+			<img class="h-60 w-60 rounded-full" src="/images/{{data.user.picture}}" alt="">
+			<p>{{data.user.name}}</p>
+			<p>{{data.user.description}}</p>
+		</div>
+
+		{# divider #}
+		<div class="border-b border-gray-200 pb-2 mt-4">
+			<h3 class="text-base leading-6 text-gray-500 text-center">Posts from
+				{{data.user.name}}</h3>
+		</div>
+		{# posts from user #}
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
+
+
+			{% for post in data.post %}
+				{% set likes = post.__get('ownLikeList') %}
+
+				{% set isLiked = user ? likes|filter(like => like.user_id == user.id)|length > 0 : false %}
+				<div
+					class="rounded-lg bg-none w-full px-2 border mt-4 mb-8">
+					{# upper post nav #}
+					<div class="flex p-1 items-center justify-between">
+						<a href="../user/about?name={{ post.__get('user').name }}">
+							<div class="flex items-center">
+								<img class="h-8 w-8 rounded-full mr-2" src="/images/{{ post.__get('user').picture }}" alt="">
+
+								<p class="text-center">{{ post.__get('user').name }}</p>
+							</div>
+						</a>
+						<div>
+							<span class="inline-flex items-center rounded-full bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 uppercase">{{post.language}}</span>
+							<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 capitalize">{{post.visibility}}</span>
+						</div>
+
+					</div>
+					{# code #}
+					<a href="../post/show?id={{post.url}}">
+						<div class="w-full h-40 overflow-hidden">
+							<pre class="text-clip overflow-hidden resize-none text-xs max-w-full break-normal"><code class="language-{{post.language}}">{{ post.content }}</code></pre>
+						</div>
+					</a>
+					{# below section #}
+					<div>
+						{# language #}
+						<div>
+							<span class="inline-flex items-center rounded-full bg-pink-100 px-2.5 py-0.5 text-xs font-medium text-pink-800 uppercase">{{post.language}}</span>
+							<span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 capitalize">{{post.visibility}}</span>
+						</div>
+						{# likes #}
+						<div class="flex w-full items-center p-2">
+							<p>
+								<span class="font-semibold">{{ likes|length }}</span>
+
+
+								likes</p>
+						</div>
+						{# desc #}
+						<div class="flex p-2">
+							<p class="font-semibold mr-2">{{ post.__get('user').name }}</p>
+
+							<a href="../post/show?id={{post.url}}">
+								<p class="max-h-20 text-ellipsis overflow-hidden ...">{{ post.description }}</p>
+							</a>
+						</div>
+
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+	<script>
+		hljs.highlightAll();
+	</script>
+{% endblock %}
