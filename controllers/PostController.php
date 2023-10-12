@@ -35,7 +35,8 @@ class PostController extends BaseController
 			R::store($reaction);
 		}
 
-		header("Location: " . $_SERVER["HTTP_REFERER"]);
+		header("Location: " . $_SERVER["HTTP_REFERER"] . "#" . $post->id);
+
 	}
 
 	public function likePost()
@@ -55,7 +56,8 @@ class PostController extends BaseController
 
 			R::trash($remove);
 		}
-		header("Location: " . $_SERVER["HTTP_REFERER"]);
+		echo $_GET["id"];
+		header("Location: " . $_SERVER["HTTP_REFERER"] . "#" . $_GET["id"]);
 	}
 
 	public function show()
