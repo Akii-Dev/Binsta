@@ -59,7 +59,7 @@ deleteAccountButton.addEventListener("click", () => {
 })
 
 window.addEventListener("click", (e) => {
-    if (!e.target.matches("#delete-knop") && !e.target.matches("#warning-content *")) {
+    if ((!e.target.matches("#delete-knop") && !e.target.matches("#warning-content *")) || e.target.matches("#cancel")) {
         deleteAccountWarning.classList.add("hidden");
     }
 })
