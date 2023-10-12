@@ -13,16 +13,16 @@ Binsta is a social media platform for creating and sharing code snippets.
 ## Requirements
 * XAMPP (or another SQL admin tool)
 * Composer
-* Redbean
 
 # Installation
-1. Install composer in the root:
+1. Clone the repository
+2. Install composer in the root:
 ```
 $ composer install
 ```
 
-2. Import db.sql in your SQL admin tool.
-3. Use an account with the following information:
+3. Import db.sql in your SQL admin tool.
+4. Use an account with the following information:
 ```
 hostname: localhost
 username: username
