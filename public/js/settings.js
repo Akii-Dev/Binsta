@@ -21,11 +21,11 @@ currentPassword.addEventListener("input", () => {
     madeNew = true;
 
     if (newPassword.value !== confirmNewPassword.value) {
-        passwordError.innerHTML = "Wachtwoorden komen niet overeen!";
+        passwordError.innerHTML = "Passwords don't match!";
         passwordError.classList.remove("hidden");
         showedError = true;
     } else if (newPassword.value == "" && confirmNewPassword.value == "") {
-        passwordError.innerHTML = "Wachtwoorden mogen niet leeg zijn";
+        passwordError.innerHTML = "Passwords cannot be empty!";
         passwordError.classList.remove("hidden");
         showedError = true;
     } else {
@@ -41,7 +41,7 @@ confirmNewPassword.addEventListener("input", passwordCheck);
 function passwordCheck() {
     if (madeNew == true) {
         if (newPassword.value !== confirmNewPassword.value) {
-            passwordError.innerHTML = "Wachtwoorden koment niet overeen";
+            passwordError.innerHTML = "Passwords don't match!";
             passwordButton.disabled = true;
             passwordButton.classList.add("bg-purple-300");
             passwordButton.classList.remove("bg-purple-600");
@@ -71,6 +71,8 @@ imgInp.addEventListener("change", (e) => {
     }
     hiddenValImg.value = "false";
 })
+
+// Resets the profile picture back to default
 
 removeImg.addEventListener("click", (e) => {
     preview.src = "/images/default-pfp.png";
