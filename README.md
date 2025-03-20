@@ -13,6 +13,7 @@ Binsta is a social media platform for creating and sharing code snippets.
 ## Requirements
 * XAMPP (or another SQL admin tool)
 * Composer
+* NodeJS
 
 # Installation
 1. Clone the repository
@@ -49,3 +50,8 @@ You can also edit or delete any post you create.
 
 You are also able to edit your own account and delete it if desired.
 
+# Images
+![index](https://github.com/Akii-Dev/Binsta/blob/main/public/images/index.png?raw=true)
+![profile](https://github.com/Akii-Dev/Binsta/blob/main/public/images/userinfo.png?raw=true)
+![users](https://github.com/Akii-Dev/Binsta/blob/main/public/images/users.png?raw=true)
+![edit profile](https://github.com/Akii-Dev/Binsta/blob/main/public/images/editprofile.png?raw=true)
